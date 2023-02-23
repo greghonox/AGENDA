@@ -8,16 +8,19 @@ class ScheduleForms(forms.ModelForm):
     class Meta:
         model = Schedule
         fields = ['doctor', 'patient', 'date'] 
-    
+
+    def __init__(self, *args, **kargs):
+        super().__init__(*args, **kargs)
+        self.fields['date'].widget.attrs.update({'class': 'date', 'id': 'date'})    
 
     def clean(self):
         doctor = self.cleaned_data.get('doctor')
         patient = self.cleaned_data.get('patient')
         date = self.cleaned_data.get('date')
         if datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc) > date:
-            raise forms.ValidationError('Não pode fazer agendamento antes da data corrente!')
+            raise ValidationError('Não pode fazer agendamento antes da data corrente!')
         if len(self.get_schedule_hour(doctor, patient, date)) > 0:
-            raise forms.ValidationError(f'O agendamento para {patient} com o doutor: {doctor} já existe na data: {date}')
+            raise ValidationError(f'O agendamento para {patient} com o doutor: {doctor} já existe na data: {date}')
         
     def get_schedule_hour(self, doctor, patient, date):
         data_start = datetime.datetime(date.year, date.month, date.day, date.hour, 0)

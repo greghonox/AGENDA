@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block conteudo %}
+{% load crispy_forms_tags %}
+
+<br/>
+<br/>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6 offset-md-3"></div>
+            <!-- TABLE -->
+            <div class="card-body"></div>
+                <h2>Lista de Consultas</h2>
+                <table class="table table-striped table-hover table-responsive-sm">
+                    <tr>
+                        <th>Id</th>
+                        <th>Doutor</th>
+                        <th>Paciente</th>
+                        <th>Data</th>
+                        <th>Alterar</th>
+                        <th></th>
+                    </tr>
+                    {% for scheduler in schedulers %}
+                        <tr>
+                            <td>{{ scheduler.id }}</td>
+                            <td>{{ scheduler.doctor }}</td>
+                            <td>{{ scheduler.patient }}</td>
+                            <td>{{ scheduler.date }}</td>
+                            <td><a href="{% url 'change_scheduler' scheduler.id %}" class="btn-info btn-sm">Editar</a></td>
+                            <td><a href="{% url 'remove_scheduler' scheduler.id %}" class="btn-danger btn-sm">Remover</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <!--  -->
+            </div>
+            <!-- FIM DA TABLE -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}

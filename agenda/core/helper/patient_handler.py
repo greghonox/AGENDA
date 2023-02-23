@@ -1,6 +1,4 @@
 from core.forms import PatientForms
-from core.models import Patient
-from django.shortcuts import render, get_object_or_404
 
 class PatientHandler:
     def __init__(self, request):

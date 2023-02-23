@@ -1,4 +1,3 @@
-from core.models import Doctor
 from core.forms import DoctorForms
 
 

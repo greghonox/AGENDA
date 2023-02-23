@@ -4,12 +4,13 @@ from django.http import Http404, HttpResponse, JsonResponse
 from django.contrib import messages
 from django.conf import settings
 
-from .models import Patient, Doctor
-from core.helper import PatientHandler, DoctorHandler
-from core.forms import PatientForms, DoctorForms
+from .models import Patient, Doctor, Schedule
+from core.helper import PatientHandler, DoctorHandler, SchedulerHandler
+from core.forms import PatientForms, DoctorForms, ScheduleForms
 
 def index(request):
     return render(request, 'index.html')
+
 
 @permission_required('core.add_patient')
 def register_patient(request):
@@ -59,10 +60,12 @@ def register_doctor(request):
         return redirect(to='register_patient')
     return render(request, 'register_patient.html', data)
 
+
 @permission_required('core.query_doctor')
 def query_doctor(request):
     doctor = Doctor.objects.all()
     return render(request, 'query_doctor.html', {'doctors': doctor})
+
 
 @permission_required('core.change_doctor')
 def change_doctor(request, id):
@@ -76,6 +79,7 @@ def change_doctor(request, id):
             return redirect(to='query_doctor')
     return render(request, 'register_doctor.html', data)
 
+
 @permission_required('core.remove_doctor')
 def remove_doctor(request, id):
     doctor = get_object_or_404(Doctor, id=id)
@@ -84,14 +88,39 @@ def remove_doctor(request, id):
     return redirect(to='query_doctor')
 
 
+@permission_required('core.add_doctor')
 def register_scheduler(request):
-    ...
+    handler = SchedulerHandler(request)
+    data = {'form': handler.get_form()}
+    if request.method == 'POST':
+        if handler.execute():
+            messages.success(request, 'Registrado consulta com sucesso!!!')
+        return redirect(to='register_scheduler')
+    return render(request, 'register_scheduler.html', data)
 
+
+@permission_required('core.query_schedule')
 def query_scheduler(request):
-    ...
+    scheduler = Schedule.objects.all()
+    return render(request, 'query_scheduler.html', {'schedulers': scheduler})
 
-def change_scheduler(request):
-    ...
 
-def remove_scheduler(request):
-    ...
+@permission_required('core.change_schedule')
+def change_scheduler(request, id):
+    scheduler = get_object_or_404(Schedule, id=id)
+    data = {'form': ScheduleForms(instance=scheduler)}
+    if request.method == 'POST':
+        form = ScheduleForms(data=request.POST, instance=scheduler)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Registrado consulta com sucesso!!!')
+            return redirect(to='query_scheduler')
+    return render(request, 'register_scheduler.html', data)
+
+
+@permission_required('core.remove_schedule')
+def remove_scheduler(request, id):
+    scheduler = get_object_or_404(Schedule, id=id)
+    scheduler.delete()
+    messages.success(request, f'Removendo o {id} com sucesso')
+    return redirect(to='query_scheduler')

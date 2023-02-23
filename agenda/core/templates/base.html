@@ -41,6 +41,19 @@
     </script>
     <!-- FIM SWEETALER PARA REMOVER PACIENTE -->
     <!-- FIM SWEETALER -->
+
+    <!-- INICIO DATAPICK-->    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+    <script src="{% static 'js/jquery-ui.js' %}" ></script>
+    <script src="{% static 'js/jquery-ui-timepicker-addon.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+    <link rel='stylesheet' href="{% static 'css/jquery-ui-timepicker-addon.css' %}" />
+    <script>
+        $(document).ready(function(){
+            $( ".date" ).datetimepicker({ dateFormat: 'dd/mm/yy' }).attr("autocomplete", "on");
+        });
+    </script>        
+    <!-- FIM DATAPICK-->
 </head>
 
 <body>
