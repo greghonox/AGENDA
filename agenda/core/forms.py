@@ -1,10 +1,10 @@
 from django import forms
 import datetime
 from django.forms import ValidationError
-from core.models import Schedule, Patient
+from core.models import Schedule, Patient, Doctor
 
 
-class ScheduleForm(forms.ModelForm):
+class ScheduleForms(forms.ModelForm):
     class Meta:
         model = Schedule
         fields = ['doctor', 'patient', 'date'] 
@@ -32,3 +32,8 @@ class PatientForms(forms.ModelForm):
             'full_name',
             'observation'
         ]
+
+class DoctorForms(forms.ModelForm):
+    class Meta:
+        model = Doctor
+        fields = ['full_name', 'observation', 'special']         

@@ -4,9 +4,9 @@ from django.http import Http404, HttpResponse, JsonResponse
 from django.contrib import messages
 from django.conf import settings
 
-from .models import Patient
-from core.helper import PatientHandler
-from core.forms import PatientForms
+from .models import Patient, Doctor
+from core.helper import PatientHandler, DoctorHandler
+from core.forms import PatientForms, DoctorForms
 
 def index(request):
     return render(request, 'index.html')
@@ -35,6 +35,7 @@ def remove_patient(request, id):
     messages.success(request, f'Removendo o {patient.full_name.title()} ({id}) com sucesso')
     return redirect(to='query_patient')
 
+
 @permission_required('core.change_patient')
 def change_patient(request, id):
     patient = get_object_or_404(Patient, id=id)
@@ -48,17 +49,40 @@ def change_patient(request, id):
     return render(request, 'register_patient.html', data)
 
 
+@permission_required('core.add_doctor')
 def register_doctor(request):
-    ...
+    handler = DoctorHandler(request)
+    data = {'form': handler.get_form()}
+    if request.method == 'POST':
+        if handler.execute():
+            messages.success(request, 'Registrado Paciente com sucesso!!!')
+        return redirect(to='register_patient')
+    return render(request, 'register_patient.html', data)
 
+@permission_required('core.query_doctor')
 def query_doctor(request):
-    ...
+    doctor = Doctor.objects.all()
+    return render(request, 'query_doctor.html', {'doctors': doctor})
 
-def change_doctor(request):
-    ...
+@permission_required('core.change_doctor')
+def change_doctor(request, id):
+    doctor = get_object_or_404(Doctor, id=id)
+    data = {'form': DoctorForms(instance=doctor)}
+    if request.method == 'POST':
+        form = DoctorForms(data=request.POST, instance=doctor)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Registrado Doutor com sucesso!!!')
+            return redirect(to='query_doctor')
+    return render(request, 'register_doctor.html', data)
 
-def remove_doctor(request):
-    ...
+@permission_required('core.remove_doctor')
+def remove_doctor(request, id):
+    doctor = get_object_or_404(Doctor, id=id)
+    doctor.delete()
+    messages.success(request, f'Removendo o {doctor.full_name.title()} ({id}) com sucesso')
+    return redirect(to='query_doctor')
+
 
 def register_scheduler(request):
     ...

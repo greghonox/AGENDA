@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Patient, Doctor, Schedule
-from core.forms import ScheduleForm
+from core.forms import ScheduleForms
 
 class DoctorAdmin(admin.ModelAdmin):
     list_filter = ['full_name', 'observation', 'special',]
@@ -13,7 +13,7 @@ class PatientAdmin(admin.ModelAdmin):
 class ScheduleAdmin(admin.ModelAdmin):
     list_filter = ['doctor', 'patient', 'date']
     list_display = list_filter
-    form = ScheduleForm
+    form = ScheduleForms
 
 admin.site.register(Patient, PatientAdmin)
 admin.site.register(Doctor, DoctorAdmin)
