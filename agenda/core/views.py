@@ -7,6 +7,7 @@ from django.conf import settings
 from .models import Patient, Doctor, Schedule
 from core.helper import PatientHandler, DoctorHandler, SchedulerHandler
 from core.forms import PatientForms, DoctorForms, ScheduleForms
+import datetime
 
 def index(request):
     return render(request, 'index.html')
@@ -57,8 +58,8 @@ def register_doctor(request):
     if request.method == 'POST':
         if handler.execute():
             messages.success(request, 'Registrado Paciente com sucesso!!!')
-        return redirect(to='register_patient')
-    return render(request, 'register_patient.html', data)
+        return redirect(to='register_doctor')
+    return render(request, 'register_doctor.html', data)
 
 
 @permission_required('core.query_doctor')
@@ -121,6 +122,9 @@ def change_scheduler(request, id):
 @permission_required('core.remove_schedule')
 def remove_scheduler(request, id):
     scheduler = get_object_or_404(Schedule, id=id)
+    if datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc) > scheduler.date:
+        messages.error(request, 'Não é possivel excluir consultas anteriores!!!')
+        return redirect(to='query_scheduler')
     scheduler.delete()
     messages.success(request, f'Removendo o {id} com sucesso')
     return redirect(to='query_scheduler')
