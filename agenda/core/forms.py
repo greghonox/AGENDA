@@ -1,7 +1,7 @@
 from django import forms
 import datetime
 from django.forms import ValidationError
-from core.models import Schedule
+from core.models import Schedule, Patient
 
 
 class ScheduleForm(forms.ModelForm):
@@ -23,3 +23,12 @@ class ScheduleForm(forms.ModelForm):
         data_start = datetime.datetime(date.year, date.month, date.day, date.hour, 0)
         data_end = datetime.datetime(date.year, date.month, date.day, date.hour, 59)
         return Schedule.objects.filter(date__range=(data_start, data_end), doctor=doctor, patient=patient)
+
+class PatientForms(forms.ModelForm):
+    
+    class Meta:
+        model = Patient
+        fields = [
+            'full_name',
+            'observation'
+        ]
