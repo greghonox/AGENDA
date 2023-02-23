@@ -30,7 +30,7 @@ class Doctor(models.Model):
     special = models.CharField(max_length=50, choices=special_choice, verbose_name='Especialidade médica', blank=False)
     
     def __str__(self):
-        return f'{self.full_name} {self.special}'
+        return f'{self.full_name} {self.id}'
 
 class Patient(models.Model):
     full_name = models.CharField(max_length=255, verbose_name='Nome Completo', blank=False, error_messages={'required': 'Por favor insira um nome valido'})
