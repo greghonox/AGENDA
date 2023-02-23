@@ -1,3 +1,10 @@
+<<<<<<< HEAD
 django==4.1
 django-crispy-forms==1.13
 django-colorfield
+=======
+django
+django-crispy-forms
+django-colorfield
+django-jazzmin
+>>>>>>> 53cdf0b (feat: adding template in django admin)
