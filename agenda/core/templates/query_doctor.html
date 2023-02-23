@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block conteudo %}
+{% load crispy_forms_tags %}
+
+<br/>
+<br/>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6 offset-md-3"></div>
+            <!-- TABLE -->
+            <div class="card-body"></div>
+                <h2>Lista de Doutores</h2>
+                <table class="table table-striped table-hover table-responsive-sm">
+                    <tr>
+                        <th>Id</th>
+                        <th>Nome</th>
+                        <th>Especialidade</th>
+                        <th>Observações</th>
+                        <th>Alterar</th>
+                        <th></th>
+                    </tr>
+                    {% for doctor in doctors %}
+                        <tr>
+                            <td>{{ doctor.id }}</td>
+                            <td>{{ doctor.full_name }}</td>
+                            <td>{{ doctor.special }}</td>
+                            <td>{{ doctor.observation }}</td>
+                            <td><a href="{% url 'change_doctor' doctor.id %}" class="btn-info btn-sm">Editar</a></td>
+                            <td><a href="{% url 'remove_doctor' doctor.id %}" class="btn-danger btn-sm">Remover</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <!--  -->
+            </div>
+            <!-- FIM DA TABLE -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}

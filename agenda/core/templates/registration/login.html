@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block conteudo %}
+{% load crispy_forms_tags %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6 offset-md-3">
+           <div class="card">
+               <div class="card-body">
+                   <h2>Login</h2>
+                   <hr>
+                   <form action="" method="post">
+                       {{ form|crispy }}
+                       {% csrf_token %}
+                       <br/><br/>
+                       <input type="submit" value="login" class="btn btn-success float-right">
+                   </form>
+                   {{ message }}
+               </div>
+           </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
