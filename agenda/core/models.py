@@ -28,6 +28,7 @@ class Doctor(models.Model):
     full_name = models.CharField(max_length=255, verbose_name='Nome Completo', blank=False, error_messages={'required': 'Por favor insira um nome valido'})
     observation = models.CharField(max_length=255, verbose_name='Observação', blank=True, default='')
     special = models.CharField(max_length=50, choices=special_choice, verbose_name='Especialidade médica', blank=False)
+    crm = models.IntegerField(verbose_name='Crm do médico', blank=False, unique=True)
     
     def __str__(self):
         return f'{self.full_name} {self.id}'
