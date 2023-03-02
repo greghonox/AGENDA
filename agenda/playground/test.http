@@ -65,10 +65,44 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-"full_name": "Manoel Pedro",
-"observation": "Paciente muito inteligente e questionadora"
+"full_name": "Lucas oliveira",
+"observation": "medico com comobidade",
+"special": "ur",
+"crm": 10001
 }
 
 ###
-DELETE {{server}}/doctor/1
+DELETE {{server}}/doctor/1/
+Authorization: Bearer {{token}}
+
+################### SCHEDULE
+
+###
+GET {{server}}/schedule
+Authorization: Bearer {{token}}
+
+###
+PUT {{server}}/schedule/4/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "doctor": 2,
+    "patient": 3,
+    "date": "2023-11-01 12:00"
+}
+
+###
+POST {{server}}/schedule/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "doctor": 3,
+    "patient": 3,
+    "date": "2021-11-01 13:00"
+}
+
+###
+DELETE {{server}}/schedule/1/
 Authorization: Bearer {{token}}

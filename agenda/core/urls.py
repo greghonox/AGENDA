@@ -8,10 +8,13 @@ from rest_framework import permissions, routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from core.api.patient import PatientViewSet
 from core.api.doctor import DoctorViewSet
+from core.api.scheduler import ScheduleViewSet
 
 route = routers.DefaultRouter()
 route.register("patient", PatientViewSet, "patient")
 route.register("doctor", DoctorViewSet, "doctor")
+route.register("schedule", ScheduleViewSet, "schedule")
+
 
 urlpatterns = [
     path('', index, name='home'),
