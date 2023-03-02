@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from core.api.serializers import ScheduleSerializer
 from core.models import Schedule
-from datetime import datetime
+from datetime import datetime, timezone
 from rest_framework import serializers
 
 class ScheduleViewSet(viewsets.ModelViewSet):
@@ -28,7 +28,8 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         ...
 
     def schedule_filter(self, request):
-        return Schedule.objects.all()
+        now = datetime.now()
+        return Schedule.objects.filter(date__gt=now)
 
     def get_queryset(self):
         queryset = self.schedule_filter(self.request)
@@ -45,7 +46,7 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         patient = request.data['patient']
         date = datetime.fromisoformat(date)
         
-        if datetime.utcnow() > date:
+        if datetime.utcnow().replace(tzinfo=timezone.utc) > date:
             raise serializers.ValidationError('Não pode fazer agendamento antes da data corrente!')
         if len(self.get_schedule_hour(doctor, patient, date)) > 0:
             raise serializers.ValidationError(f'O agendamento para {patient} com o doutor: {doctor} já existe na data: {date}')      

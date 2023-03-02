@@ -13,7 +13,7 @@ from core.api.scheduler import ScheduleViewSet
 route = routers.DefaultRouter()
 route.register("patient", PatientViewSet, "patient")
 route.register("doctor", DoctorViewSet, "doctor")
-route.register("schedule", ScheduleViewSet, "schedule")
+route.register("consultas", ScheduleViewSet, "schedule")
 
 
 urlpatterns = [
