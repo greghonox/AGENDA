@@ -78,11 +78,11 @@ Authorization: Bearer {{token}}
 ################### SCHEDULE
 
 ###
-GET {{server}}/schedule
+GET {{server}}/consultas/
 Authorization: Bearer {{token}}
 
 ###
-PUT {{server}}/schedule/4/
+PUT {{server}}/consultas/4/
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -93,16 +93,16 @@ Authorization: Bearer {{token}}
 }
 
 ###
-POST {{server}}/schedule/
+POST {{server}}/consultas/
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
     "doctor": 3,
-    "patient": 3,
-    "date": "2021-11-01 13:00"
+    "patient": 6,
+    "date": "2024-11-01T15:00:00Z"
 }
 
 ###
-DELETE {{server}}/schedule/1/
+DELETE {{server}}/consultas/1/
 Authorization: Bearer {{token}}

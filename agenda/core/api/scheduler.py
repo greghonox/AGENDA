@@ -2,8 +2,8 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from core.api.serializers import ScheduleSerializer
-from core.models import Schedule
-from datetime import datetime
+from core.models import Schedule, Doctor, Patient
+from datetime import datetime, timezone
 from rest_framework import serializers
 
 class ScheduleViewSet(viewsets.ModelViewSet):
@@ -15,7 +15,12 @@ class ScheduleViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         self.validation(request)
-        return super().create(request)        
+        data = request.data
+        doctor = Doctor.objects.get(pk=data['doctor'])
+        patient = Patient.objects.get(pk=data['patient'])
+        schedule = Schedule(doctor=doctor, patient=patient, date=data['date'])
+        schedule.save()
+        return Response(status=202)
     
     def update(self, request, pk=None):
         self.validation(request)
@@ -28,7 +33,8 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         ...
 
     def schedule_filter(self, request):
-        return Schedule.objects.all()
+        now = datetime.now()
+        return Schedule.objects.filter(date__gt=now)
 
     def get_queryset(self):
         queryset = self.schedule_filter(self.request)
@@ -45,12 +51,12 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         patient = request.data['patient']
         date = datetime.fromisoformat(date)
         
-        if datetime.utcnow() > date:
+        if datetime.utcnow().replace(tzinfo=timezone.utc) > date:
             raise serializers.ValidationError('Não pode fazer agendamento antes da data corrente!')
         if len(self.get_schedule_hour(doctor, patient, date)) > 0:
             raise serializers.ValidationError(f'O agendamento para {patient} com o doutor: {doctor} já existe na data: {date}')      
         
     def get_schedule_hour(self, doctor, patient, date):
-        data_start = datetime(date.year, date.month, date.day, date.hour, 0)
-        data_end = datetime(date.year, date.month, date.day, date.hour, 59)
+        data_start = datetime(date.year, date.month, date.day, date.hour, 0).replace(tzinfo=timezone.utc)
+        data_end = datetime(date.year, date.month, date.day, date.hour, 59).replace(tzinfo=timezone.utc)
         return Schedule.objects.filter(date__range=(data_start, data_end), doctor=doctor, patient=patient)        

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.response import Response
 from core.models import Doctor, Patient, Schedule
+from datetime import datetime
 
 class DoctorSerializer(serializers.ModelSerializer):
     """Class to Doctor"""
@@ -26,9 +27,15 @@ class PatientSerializer(serializers.ModelSerializer):
 class ScheduleSerializer(serializers.ModelSerializer):
     """Class to ScheduleSerializer"""
 
+    dia = serializers.DateTimeField(source='date', format='%Y-%m-%d')
+    hora = serializers.DateTimeField(source='date', format='%H:%M')
+    data_agendamento = serializers.DateTimeField(source='date')
+    doctor = DoctorSerializer()
+    patient = PatientSerializer()
+    
     class Meta:
         model = Schedule
-        fields = "__all__"
-
+        fields = ('id', 'dia', 'hora', 'data_agendamento', 'doctor', 'patient')
+    
     def __str__(self):
         return f"{self.doctor} {self.patient} ({self.date})"
