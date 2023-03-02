@@ -9,6 +9,7 @@ from core.helper import PatientHandler, DoctorHandler, SchedulerHandler
 from core.forms import PatientForms, DoctorForms, ScheduleForms
 import datetime
 
+
 def index(request):
     return render(request, 'index.html')
 

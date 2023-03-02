@@ -1,0 +1,108 @@
+@server_base=http://localhost:8000
+@server={{server_base}}/api
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3ODA2NjkyLCJpYXQiOjE2Nzc3MjAyOTIsImp0aSI6ImQxZTYxYjcxZTU5YjRkMTdiYzA4ZjkyYTM0M2U3MWM0IiwidXNlcl9pZCI6MX0.gUoanyeJ2LZSKsJI45olPSYheqhl3orVHVlFKhvyT7w
+
+###
+POST {{server_base}}/token/
+Content-Type: application/json
+
+{
+    "username": "gregorio",
+    "password": "123"
+}
+
+###
+GET {{server}}/patient
+Authorization: Bearer {{token}}
+
+###
+PUT {{server}}/patient/4
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+"id": 2,
+"full_name": "Luiza",
+"observation": "Paciente muito inteligente e questionadora"
+}
+
+###
+POST {{server}}/patient/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+"full_name": "Manoel Pedro",
+"observation": "Paciente muito inteligente e questionadora"
+}
+
+###
+DELETE {{server}}/patient/1
+Authorization: Bearer {{token}}
+
+
+################### DOCTOR
+
+###
+GET {{server}}/doctor
+Authorization: Bearer {{token}}
+
+###
+PUT {{server}}/doctor/2/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+"id": 2,
+"full_name": "Luiza Manoela",
+"special": "pd",
+"crm": 10000
+}
+
+###
+POST {{server}}/doctor/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+"full_name": "Lucas oliveira",
+"observation": "medico com comobidade",
+"special": "ur",
+"crm": 10001
+}
+
+###
+DELETE {{server}}/doctor/1/
+Authorization: Bearer {{token}}
+
+################### SCHEDULE
+
+###
+GET {{server}}/schedule
+Authorization: Bearer {{token}}
+
+###
+PUT {{server}}/schedule/4/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "doctor": 2,
+    "patient": 3,
+    "date": "2023-11-01 12:00"
+}
+
+###
+POST {{server}}/schedule/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "doctor": 3,
+    "patient": 3,
+    "date": "2021-11-01 13:00"
+}
+
+###
+DELETE {{server}}/schedule/1/
+Authorization: Bearer {{token}}
