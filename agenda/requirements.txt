@@ -3,3 +3,5 @@ django-crispy-forms==1.13
 django-colorfield
 djangorestframework-simplejwt
 pyjwt
+psycopg2
+django-filter==22.1
