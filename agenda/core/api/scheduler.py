@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from core.api.serializers import ScheduleSerializer
-from core.models import Schedule
+from core.models import Schedule, Doctor, Patient
 from datetime import datetime, timezone
 from rest_framework import serializers
 
@@ -15,7 +15,12 @@ class ScheduleViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         self.validation(request)
-        return super().create(request)        
+        data = request.data
+        doctor = Doctor.objects.get(pk=data['doctor'])
+        patient = Patient.objects.get(pk=data['patient'])
+        schedule = Schedule(doctor=doctor, patient=patient, date=data['date'])
+        schedule.save()
+        return Response(status=202)
     
     def update(self, request, pk=None):
         self.validation(request)
@@ -52,6 +57,6 @@ class ScheduleViewSet(viewsets.ModelViewSet):
             raise serializers.ValidationError(f'O agendamento para {patient} com o doutor: {doctor} já existe na data: {date}')      
         
     def get_schedule_hour(self, doctor, patient, date):
-        data_start = datetime(date.year, date.month, date.day, date.hour, 0)
-        data_end = datetime(date.year, date.month, date.day, date.hour, 59)
+        data_start = datetime(date.year, date.month, date.day, date.hour, 0).replace(tzinfo=timezone.utc)
+        data_end = datetime(date.year, date.month, date.day, date.hour, 59).replace(tzinfo=timezone.utc)
         return Schedule.objects.filter(date__range=(data_start, data_end), doctor=doctor, patient=patient)        

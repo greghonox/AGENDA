@@ -98,8 +98,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "doctor": {"id": 3},
-    "patient": {"id": 5},
+    "doctor": 3,
+    "patient": 6,
     "date": "2024-11-01T15:00:00Z"
 }
 

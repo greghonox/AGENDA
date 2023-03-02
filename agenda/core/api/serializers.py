@@ -27,11 +27,11 @@ class PatientSerializer(serializers.ModelSerializer):
 class ScheduleSerializer(serializers.ModelSerializer):
     """Class to ScheduleSerializer"""
 
-    dia = serializers.DateTimeField(source='date', format='%Y-%m-%d', required=False)
-    hora = serializers.DateTimeField(source='date', format='%H:%M', required=False)
-    data_agendamento = serializers.DateTimeField(source='date', required=False)
-    doctor = DoctorSerializer(required=False)
-    patient = PatientSerializer(required=False)
+    dia = serializers.DateTimeField(source='date', format='%Y-%m-%d')
+    hora = serializers.DateTimeField(source='date', format='%H:%M')
+    data_agendamento = serializers.DateTimeField(source='date')
+    doctor = DoctorSerializer()
+    patient = PatientSerializer()
     
     class Meta:
         model = Schedule
