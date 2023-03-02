@@ -1,0 +1,31 @@
+@server_base=http://localhost:8000
+@server={{server_base}}/api
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3ODA2NjkyLCJpYXQiOjE2Nzc3MjAyOTIsImp0aSI6ImQxZTYxYjcxZTU5YjRkMTdiYzA4ZjkyYTM0M2U3MWM0IiwidXNlcl9pZCI6MX0.gUoanyeJ2LZSKsJI45olPSYheqhl3orVHVlFKhvyT7w
+
+###
+POST {{server_base}}/token/
+Content-Type: application/json
+
+{
+    "username": "gregorio",
+    "password": "123"
+}
+
+###
+GET {{server}}/patient/
+Authorization: Bearer {{token}}
+
+###
+PUT {{server}}/patient/1/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+"id": 1,
+"full_name": "Luiza",
+"observation": "Paciente muito inteligente e questionadora"
+}
+
+###
+DELETE {{server}}/patient/1/
+Authorization: Bearer {{token}}
