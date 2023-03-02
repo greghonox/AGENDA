@@ -39,8 +39,8 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         now = datetime.now()
         parameters = self._build_query_parameters()
         if parameters:
-            return Schedule.objects.filter(parameters)
-        return  Schedule.objects.filter(date__gt=now)
+            return Schedule.objects.filter(parameters).order_by('date')
+        return  Schedule.objects.filter(date__gt=now).order_by('date')
 
     def _build_query_parameters(self):
         data_inicio = self.request.GET.get('data_inicio', [])
