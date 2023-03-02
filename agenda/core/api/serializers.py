@@ -31,11 +31,10 @@ class ScheduleSerializer(serializers.ModelSerializer):
     hora = serializers.DateTimeField(source='date', format='%H:%M')
     data_agendamento = serializers.DateTimeField(source='date')
     doctor = DoctorSerializer()
-    patient = PatientSerializer()
     
     class Meta:
         model = Schedule
-        fields = ('id', 'dia', 'hora', 'data_agendamento', 'doctor', 'patient')
+        fields = ('id', 'dia', 'hora', 'data_agendamento', 'doctor')
     
     def __str__(self):
         return f"{self.doctor} {self.patient} ({self.date})"

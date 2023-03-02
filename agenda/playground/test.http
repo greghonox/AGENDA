@@ -76,9 +76,20 @@ DELETE {{server}}/doctor/1/
 Authorization: Bearer {{token}}
 
 ################### SCHEDULE
-
 ###
 GET {{server}}/consultas/
+Authorization: Bearer {{token}}
+
+###
+GET {{server}}/consultas/?data_inicio=2023-11-10&data_final=2027-11-10
+Authorization: Bearer {{token}}
+
+###
+GET {{server}}/consultas/?data_inicio=2023-11-10&data_final=2027-11-10&medico=2&medico=3
+Authorization: Bearer {{token}}
+
+###
+GET {{server}}/consultas/?data_inicio=2023-11-10&data_final=2027-11-10&medico=2&medico=3&crm=10001
 Authorization: Bearer {{token}}
 
 ###
@@ -89,7 +100,7 @@ Authorization: Bearer {{token}}
 {
     "doctor": 2,
     "patient": 3,
-    "date": "2023-11-01 12:00"
+    "date": "2023-11-11T01:01:00Z"
 }
 
 ###
@@ -100,7 +111,7 @@ Authorization: Bearer {{token}}
 {
     "doctor": 3,
     "patient": 6,
-    "date": "2024-11-01T15:00:00Z"
+    "date": "2024-11-01T14:59:00Z"
 }
 
 ###

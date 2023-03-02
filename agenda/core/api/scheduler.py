@@ -5,6 +5,8 @@ from core.api.serializers import ScheduleSerializer
 from core.models import Schedule, Doctor, Patient
 from datetime import datetime, timezone
 from rest_framework import serializers
+from django.db.models import Q
+
 
 class ScheduleViewSet(viewsets.ModelViewSet):
     "Serializers handler Schedule"
@@ -23,25 +25,48 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         return Response(status=202)
     
     def update(self, request, pk=None):
-        self.validation(request)
-        return super().update(request, pk)        
+        data = request.data
+        doctor = Doctor.objects.get(pk=data['doctor'])
+        patient = Patient.objects.get(pk=data['patient'])
+        schedule = Schedule.objects.filter(pk=pk)
+        schedule.update(doctor=doctor, patient=patient, date=data['date'])
+        return Response(status=203)
 
     def delete(self, request):
         ...
-        
-    def get_queryset(self):
-        ...
 
-    def schedule_filter(self, request):
+    def schedule_filter(self):
         now = datetime.now()
-        return Schedule.objects.filter(date__gt=now)
+        parameters = self._build_query_parameters()
+        if parameters:
+            return Schedule.objects.filter(parameters)
+        return  Schedule.objects.filter(date__gt=now)
 
-    def get_queryset(self):
-        queryset = self.schedule_filter(self.request)
-        return queryset        
+    def _build_query_parameters(self):
+        data_inicio = self.request.GET.get('data_inicio', [])
+        data_final = self.request.GET.get('data_final', [])
+        medico = self.request.query_params.getlist('medico')
+        crm = self.request.query_params.getlist('crm')
+        fields = [data_inicio, data_final, medico, crm]
+        if any([len(query) > 0 for query in fields]):
+            filters = Q()
+            if data_inicio:
+                filters &= Q(date__date__gte=data_inicio)
+
+            if data_final:
+                filters &= Q(date__date__lte=data_final)
+
+            if medico:
+                filters &= Q(doctor__in=medico)
+
+            if crm:
+                filters &= Q(doctor__crm__in=crm)
+            return filters
+        else:
+            return {}
         
     def list(self, request):
-        queryset = self.get_queryset()
+        queryset = self.schedule_filter()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, 200)
 
