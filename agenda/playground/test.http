@@ -12,20 +12,63 @@ Content-Type: application/json
 }
 
 ###
-GET {{server}}/patient/
+GET {{server}}/patient
 Authorization: Bearer {{token}}
 
 ###
-PUT {{server}}/patient/1/
+PUT {{server}}/patient/4
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-"id": 1,
+"id": 2,
 "full_name": "Luiza",
 "observation": "Paciente muito inteligente e questionadora"
 }
 
 ###
-DELETE {{server}}/patient/1/
+POST {{server}}/patient/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+"full_name": "Manoel Pedro",
+"observation": "Paciente muito inteligente e questionadora"
+}
+
+###
+DELETE {{server}}/patient/1
+Authorization: Bearer {{token}}
+
+
+################### DOCTOR
+
+###
+GET {{server}}/doctor
+Authorization: Bearer {{token}}
+
+###
+PUT {{server}}/doctor/2/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+"id": 2,
+"full_name": "Luiza Manoela",
+"special": "pd",
+"crm": 10000
+}
+
+###
+POST {{server}}/doctor/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+"full_name": "Manoel Pedro",
+"observation": "Paciente muito inteligente e questionadora"
+}
+
+###
+DELETE {{server}}/doctor/1
 Authorization: Bearer {{token}}

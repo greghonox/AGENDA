@@ -6,11 +6,12 @@ from .views import index, register_patient, remove_patient, \
 query_patient, change_patient, register_doctor, query_doctor, change_doctor, remove_doctor, register_scheduler, query_scheduler, change_scheduler, remove_scheduler
 from rest_framework import permissions, routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from core.api.viewsets import PatientViewSet
-
+from core.api.patient import PatientViewSet
+from core.api.doctor import DoctorViewSet
 
 route = routers.DefaultRouter()
 route.register("patient", PatientViewSet, "patient")
+route.register("doctor", DoctorViewSet, "doctor")
 
 urlpatterns = [
     path('', index, name='home'),

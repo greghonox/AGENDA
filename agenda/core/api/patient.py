@@ -1,11 +1,8 @@
-from rest_framework import status, viewsets
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from core.api.serializers import DoctorSerializer, PatientSerializer, ScheduleSerializer
-from core.models import Doctor, Patient, Schedule
-
-CHAVE_API = "Key aW50ZWxsaWNhcmVyb3V0ZXI6MUV6ZFVlYk95alEzUzhncDNHWnc="
-header = {"Authorization": CHAVE_API, "Content-Type": "application/json"}
+from core.api.serializers import PatientSerializer
+from core.models import Patient
 
 
 class PatientViewSet(viewsets.ModelViewSet):
