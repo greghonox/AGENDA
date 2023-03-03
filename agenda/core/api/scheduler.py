@@ -6,7 +6,7 @@ from core.models import Schedule, Doctor, Patient
 from datetime import datetime, timezone
 from rest_framework import serializers
 from django.db.models import Q
-
+from django.shortcuts import get_object_or_404
 
 class ScheduleViewSet(viewsets.ModelViewSet):
     "Serializers handler Schedule"
@@ -31,10 +31,14 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         schedule = Schedule.objects.filter(pk=pk)
         schedule.update(doctor=doctor, patient=patient, date=data['date'])
         return Response(status=203)
-
-    def delete(self, request):
-        ...
-
+    
+    def destroy(self, request, pk):
+        shedule = get_object_or_404(Schedule, pk=pk)
+        now = datetime.now().replace(tzinfo=timezone.utc)
+        if shedule.date < now:
+            raise serializers.ValidationError('Nao pode remover consultas passadas!')
+        return super().destroy(request, pk)
+    
     def schedule_filter(self):
         now = datetime.now()
         parameters = self._build_query_parameters()

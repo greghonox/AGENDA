@@ -7,7 +7,7 @@ POST {{server_base}}/token/
 Content-Type: application/json
 
 {
-    "username": "gregorio",
+    "username": "greg",
     "password": "123"
 }
 
@@ -32,8 +32,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-"full_name": "Manoel Pedro",
-"observation": "Paciente muito inteligente e questionadora"
+"full_name": "Gregorio Manoel",
+"observation": "inteligente e questionadora"
 }
 
 ###
@@ -65,8 +65,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-"full_name": "Lucas oliveira",
-"observation": "medico com comobidade",
+"full_name": "Oliveira Lucas",
 "special": "ur",
 "crm": 10001
 }
@@ -111,7 +110,7 @@ Authorization: Bearer {{token}}
 {
     "doctor": 3,
     "patient": 6,
-    "date": "2024-11-01T14:59:00Z"
+    "date": "2021-11-01T14:59:00Z"
 }
 
 ###
