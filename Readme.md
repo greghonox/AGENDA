@@ -12,7 +12,72 @@
 5. O gestor da clínica pode criar a agenda do médico para cada dia
 
 ___
-### 1. O usuário pode marcar uma consulta([Cadastro de consultas](http://127.0.0.1:8000/register_scheduler/))
+
+## Antes do desafio, __caso queira rodar o projeto faço os passos abaixos:__
+---
+1. Faça build do docker compose para ter o projeto rodando. __(Lembrando que não vou explicar os conceitos basicos de instalar o docker e coisas mais basicas)__
+
+
+```python
+docker-compose up
+```
+
+Ele deve aparecer no seu terminal alguns sinais semelhantes a esses:
+![build](https://github.com/greghonox/AGENDA/blob/main/docs/build.png)
+
+2. Após isso deve se __migragar os dados__ para poder ter a base no postgres.
+
+
+```python
+docker exec -it id bash 
+```
+2.1 Caso não tenha o __id__:
+
+
+```python
+docker ps
+```
+![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/docker_ps.png)
+
+2.2 Observe o nome da imagem que deve ser __agenda_web__. Você deve copiar o numero da coluna __CONTAINER_ID__. Depois voltar no passo **2** para conectar.
+
+3. Migração dos dados:
+
+```python
+cd agenda/ 
+python manage.py migrate
+python manage.py createsuperuser 
+```    
+
+![migrate_and_createsuperuser](https://github.com/greghonox/AGENDA/blob/main/docs/migrate_and_createsuperuser.png)
+
+## Agora estamos pronto...
+
+### Autorização
+---
+#### Foi adicionado autorização com token em todas as rotas como *plus*. Então deve se solicitar o token confome requisição abaixo para utilizar.
+
+```python
+POST {{server_base}}/token/
+Content-Type: application/json
+
+{
+    "username": "greg",
+    "password": "123"
+}
+```
+#### _Detalhe:_ O campo *username* e *password* são informações de login que criou no comando de *createsuperuser*.
+
+#### Antes de mais nada existe um arquivo de testes dentro de __agenda/playground__ chamado *test.http*. Ele é os verbos de __GET POST PUT e DELETE__ para todas entidades desse projeto. Mas ainda sim vamos comentar algumas coisas.
+[test.http](https://github.com/greghonox/AGENDA/blob/main/agenda/playground/test.http)
+
+#### O test.http é usado junto com __vs code__ assim consegue ter um cliente __rest__ no ambiente de desenvolvimento. Veja abaixo o icone da extenção
+![test.http](https://github.com/greghonox/AGENDA/blob/main/docs/http.png)
+
+#### Veja também como fica no vs code os test.http aberto para uso
+![test.http](https://github.com/greghonox/AGENDA/blob/main/docs/test_http_aberto.png)
+
+### 1. O usuário pode marcar uma consulta
 ![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/cadastrar_agenda.png)
 
 ### 1.1. Não deve ser possível marcar consultas para um dia e horário não disponível
@@ -26,20 +91,22 @@ ___
 #### Como ficou as validações anteriores em codigo:
 ![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/codigo_validacao.png)
 
-### 2. O usuário pode desmarcar uma consulta([Cadastro de consultas](http://127.0.0.1:8000/query_scheduler/))
-#### Pode ser feito através do botão de excluir na consulta.
-![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/consulta_agenda.png)
+### 2. O usuário pode desmarcar uma consulta
+![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/ecluir_consulta.png)
 
 ### 2.1. Não deve ser possível desmarcar uma consulta que já aconteceu
 ![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/error_excluir_consulta_agendada.png)
 #### Veja também o codigo de validação
 ![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/codigo_validacao2.png)
 
-### 3. O usuário pode visualizar as todas as consultas marcadas que ainda não aconteceram
+### 3. O usuário pode visualizar as todas as consultas marcadas que ainda não aconteceram(__Isso usando o filtro, caso quiera__)
 ![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/consulta_agenda.png)
 
-#### 4. O gestor da clínica pode cadastrar um médico([Cadastro de consultas](http://127.0.0.1:8000/register_doctor/))
+#### 4. O gestor da clínica pode cadastrar um médico
 ![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/cadastro_doutor.png)
+
+#### 4.1 Caso exista um __CRM__ já registrado ele vai apresentar erro
+![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/cadastro_doutor_erro_crm.png)
 
 ### 5. O gestor da clínica pode criar a agenda do médico para cada dia
 ![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/cadastrar_agenda.png)
@@ -51,30 +118,11 @@ ___
 #### 2. Consulta de cadastro simples.
 #### 3. Conexão com banco de dados.
 #### 4. Migração de modelos de tabelas. (__Veja o histórico do github__)
-#### 5. Criação de __graficos com bootstrap__.
-#### 6. Esboço de testes unitários.
+#### 5. Esboço de testes unitários.
 
 ### Requisito para rodar projeto
-#### 1. Ter python <= 3.10
-#### 2. Instalar o *requirements.txt*.
-#### 3. Noção de __Makefile__ e comandos linux.
+#### docker e docker-compose
 
-### Para começar, __Comandos abaixo funcionan apenas em sistema unix__.
-
-```python
-make create-venv
-make install-requirements
-make run
-```
-
-### Acessando o sistema:
-[Cadastro de consultas](http://127.0.0.1:8000/register_scheduler/)
-[Consulta da agenda](http://127.0.0.1:8000/query_scheduler/)
-[Cadastro de Pacientes](http://127.0.0.1:8000/register_patient/)
-[Consulta de Pacientes](http://127.0.0.1:8000/query_patient/)
-[Cadastro de Doutores](http://127.0.0.1:8000/register_doctor/)
-[Consulta de Doutores](http://127.0.0.1:8000/query_doctor/)
-[Admin](http://127.0.0.1:8000/admin/)
 
 ### Historico de desenvolvimento:
 ![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/github_history.png)
@@ -83,16 +131,8 @@ make run
 #### Primeiro faça o login para entrar no admin django
 [admin django](http://127.0.0.1:8000/admin)
 
-### Credenciais para acesso:
-```python
-usuario: greg
-senha: 123
-```
 ### Tela de login no adm:
 ![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/login.png)
-
-### Tela de login no template:
-![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/login2.png)
 
 ### Testes unitários(não implementado):
 ![Grafico](https://github.com/greghonox/AGENDA/blob/main/docs/tests.png)
